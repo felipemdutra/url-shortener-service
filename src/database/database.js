@@ -63,3 +63,21 @@ export function insertUrl(db, original, shortened) {
     });
 }
 
+/*
+* @param db {sqlite3.Database} 
+* @param shortened {string} shortened URL
+* @returns {Promise<string>}
+*/
+export function getUrl(db, shortened) {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT original FROM urls WHERE shortened = ?`, [shortened], (err, row) => {
+                if (err) {
+                    reject(err.message)
+                    return
+                }
+
+                resolve(row ? row.original : null)
+            })
+    })
+}
+
