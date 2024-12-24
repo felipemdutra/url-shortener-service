@@ -1,5 +1,8 @@
-const express = require("express")
+import { createShortUrl } from "./url.js"
+import express from "express"
+
 const app = express();
+
 app.use(express.urlencoded({ extended: true }));
 
 const PORT = 8000
@@ -13,6 +16,9 @@ app.get("/", (req, res) => {
 app.post("/shorten", (req, res) => {
     const longUrl = req.body.longUrl;
     console.log("Received: ", longUrl);
+
+    const shortUrl = createShortUrl(longUrl);
+    console.log("Shortened: ", shortUrl);
 
     res.redirect("/");
 })
