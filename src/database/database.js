@@ -2,7 +2,7 @@ import sqlite3 from 'sqlite3';
 
 /*
  * @param {string} database path
- * @returns {sqlite.Database}
+ * @returns {sqlite3.Database}
  */
 export function initializeDatabase(dbPath) {
     const db = new sqlite3.Database(dbPath, (err) => {
@@ -32,6 +32,17 @@ export function initializeDatabase(dbPath) {
     });
 
     return db;
+}
+
+/*
+ * @param {sqlite3.Database}
+ */
+export function closeDatabase(db) {
+    db.close((err) => {
+        if (err) {
+            console.error("Couldn't close database:", err.message);
+        }
+    })
 }
 
 /*
