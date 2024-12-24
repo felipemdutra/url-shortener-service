@@ -1,9 +1,12 @@
-import { createShortUrl } from "./url.js"
 import express from "express"
 
-const app = express();
+import { createShortUrl } from "./url.js"
+import { initializeDatabase, insertUrl } from "./database/database.js"
 
+const app = express();
 app.use(express.urlencoded({ extended: true }));
+
+const db = initializeDatabase("./urls.db")
 
 const PORT = 8000
 
@@ -19,6 +22,8 @@ app.post("/shorten", (req, res) => {
 
     const shortUrl = createShortUrl(longUrl);
     console.log("Shortened: ", shortUrl);
+
+    insertUrl(db, longUrl, shortUrl);
 
     res.redirect("/");
 })
