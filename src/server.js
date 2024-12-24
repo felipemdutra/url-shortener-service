@@ -1,7 +1,7 @@
 import express from "express"
 
 import { createShortUrl } from "./url.js"
-import { closeDatabase, initializeDatabase, insertUrl } from "./database/database.js"
+import { initializeDatabase, insertUrl, getUrl } from "./database/database.js"
 
 const app = express();
 app.use(express.urlencoded({ extended: true }))
@@ -16,6 +16,24 @@ app.get("/", (req, res) => {
     res.render("index")
 })
 
+app.get(`/:shortUrl`, async (req, res) => {
+    try {
+        const originalUrl = await getUrl(db, req.params.shortUrl);
+        if (originalUrl) {
+            res.redirect(`${originalUrl}`);
+        }
+        else {
+            res.status(404).send("Not found");
+            console.log("URL not found");
+        }
+    }
+    catch (err) {
+        res.status(500).send("Internal server error");
+        console.error("Error:", err);
+    }
+    
+}) 
+
 app.post("/shorten", (req, res) => {
     const longUrl = req.body.longUrl
     console.log("Received: ", longUrl)
@@ -29,6 +47,4 @@ app.post("/shorten", (req, res) => {
 })
 
 app.listen(PORT)
-
-closeDatabase(db)
 
