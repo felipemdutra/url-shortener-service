@@ -1,4 +1,4 @@
-import sqlite3 from "sqlite3";
+import { hashPassword } from "./utils/password.js";
 
 /*
  * @param {sqlite3.Database}
@@ -24,8 +24,10 @@ export function initializeUsersTable(db) {
 }
 
 export function insertUser(db, username, email, password) {
+    const hashedPassword = hashPassword(password)
+
     return new Promise((resolve, reject) => {
-        db.run("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", [username, email, password], function(err) {
+        db.run("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", [username, email, hashedPassword], function(err) {
             if (err) {
                 reject(err.message);
             } else {
