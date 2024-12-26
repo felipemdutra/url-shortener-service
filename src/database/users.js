@@ -14,27 +14,32 @@ export function initializeUsersTable(db) {
                 )
         `, (err) => {
             if (err) {
-                console.error("Couldn't create table:", err.message);
+                console.error("Couldn't create table:", err.message)
                 return
             }
         });
 
-        db.run("CREATE INDEX IF NOT EXISTS idx_username ON users(username)");
+        db.run("CREATE INDEX IF NOT EXISTS idx_username ON users(username)")
     })
 }
 
 export function insertUser(db, username, email, password) {
-    const hashedPassword = hashPassword(password)
 
     return new Promise((resolve, reject) => {
-        db.run("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", [username, email, hashedPassword], function(err) {
-            if (err) {
-                reject(err.message);
-            } else {
-                resolve(username);
-            }
-        });
-    });
-
+        try {
+            // Hash password before inserting into DB.
+            const hashedPassword = hashPassword(password)
+            db.run("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", [username, email, hashedPassword], function(err) {
+                    if (err) {
+                        reject(err.message)
+                    } else {
+                        resolve(username)
+                    }
+            })
+        }
+        catch (err) {
+            reject(err.message)
+        }
+    })
 }
 
