@@ -3,7 +3,7 @@ import sqlite3 from "sqlite3";
 /*
  * @param {sqlite3.Database}
  */
-export function InitializeUsersTable(db) {
+export function initializeUsersTable(db) {
     db.serialize(() => {
         db.run(`
                 CREATE TABLE IF NOT EXISTS users (
