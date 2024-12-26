@@ -10,7 +10,7 @@ so its going to have more features in the future.
 - Redirect users to the original URL
 - Display the created shortened URL
 - Basic error handling
-- SQLite3 database for storing URLs
+- SQLite3 database for storing URLs and users
 
 ## Getting Started
 
