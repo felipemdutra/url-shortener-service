@@ -43,7 +43,7 @@ app.post("/shorten", (req, res) => {
 
     insertUrl(db, longUrl, shortUrl)
 
-    res.redirect("/")
+    res.render("displayYourLink", { shortUrl: shortUrl })
 })
 
 app.listen(PORT)
