@@ -1,7 +1,7 @@
 import sqlite3 from 'sqlite3';
 
 import { initializeUrlsTable } from './urls.js';
-import { InitializeUsersTable } from './users.js';
+import { initializeUsersTable } from './users.js';
 
 /*
  * @param {string} database path
@@ -15,7 +15,7 @@ export function initializeDatabase(dbPath) {
         }
 
         initializeUrlsTable(db);
-        InitializeUsersTable(db);
+        initializeUsersTable(db);
 
         console.log("Connected to the SQLite database.");
     });
