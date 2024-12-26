@@ -1,7 +1,8 @@
 import express from "express"
 
 import { createShortUrl } from "./url.js"
-import { initializeDatabase, insertUrl, getUrl } from "./database/database.js"
+import { initializeDatabase } from "./database/database.js"
+import { insertUrl, getUrl } from "./database/urls.js"
 
 const app = express();
 app.use(express.urlencoded({ extended: true }))
