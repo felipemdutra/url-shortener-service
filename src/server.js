@@ -7,33 +7,39 @@ import { insertUrl, getUrl } from "./database/urls.js"
 const app = express();
 app.use(express.urlencoded({ extended: true }))
 
-const db = initializeDatabase("./urls.db")
+const db = initializeDatabase("./urlShortener.db")
 
 const PORT = 8000
 
 app.set("view engine", "ejs")
 
+
 app.get("/", (req, res) => {
-    res.render("index")
+    res.render("homePage")
 })
+
+app.get("/sign-up", (req, res) => {
+    res.render("signUpPage")
+}) 
 
 app.get(`/:shortUrl`, async (req, res) => {
     try {
         const originalUrl = await getUrl(db, req.params.shortUrl);
         if (originalUrl) {
             res.redirect(`${originalUrl}`);
+            return 0
         }
-        else {
-            res.status(404).send("Not found");
-            console.log("URL not found");
-        }
+        res.status(404).send("Not found");
+        console.log("URL not found");
     }
+
     catch (err) {
         res.status(500).send("Internal server error");
-        console.error("Error:", err);
+        console.error(err);
     }
     
 }) 
+
 
 app.post("/shorten", (req, res) => {
     const longUrl = req.body.longUrl
@@ -44,8 +50,18 @@ app.post("/shorten", (req, res) => {
 
     insertUrl(db, longUrl, shortUrl)
 
-    res.render("displayYourLink", { shortUrl: shortUrl })
+    res.render("displayLinkPage", { shortUrl: shortUrl })
 })
 
-app.listen(PORT)
+app.post("/signup", (req, res) => {
+
+})
+
+const server = app.listen(PORT, (err) => {
+    if (err) {
+        console.log(err)
+        return null
+    }
+    console.log("Listening on port" , PORT)
+})
 
