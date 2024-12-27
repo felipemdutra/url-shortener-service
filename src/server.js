@@ -3,6 +3,7 @@ import express from "express"
 import { createShortUrl } from "./url.js"
 import { initializeDatabase } from "./database/database.js"
 import { insertUrl, getUrl } from "./database/urls.js"
+import { insertUser, getUser } from "./database/users.js"
 
 const app = express();
 app.use(express.urlencoded({ extended: true }))
@@ -53,8 +54,28 @@ app.post("/shorten", (req, res) => {
     res.render("displayLinkPage", { shortUrl: shortUrl })
 })
 
-app.post("/signup", (req, res) => {
+app.post("/signup", async (req, res) => {
+    const { username, email, password } = req.body
+    insertUser(db, username, email, password)
 
+    try {
+        // Retrieve user info
+        const userInfo = await getUser(db, email)
+
+        console.log("User found")
+        console.log(userInfo)
+
+        res.status(200).send("OK")
+    } catch (error) {
+        console.error("Error:", error);
+
+        // Handle user not found or insertion issues
+        if (error === "User not found") {
+            res.status(404).send("Not Found");
+        } else {
+            res.status(500).send("Internal Server Error");
+        }
+    }
 })
 
 const server = app.listen(PORT, (err) => {
