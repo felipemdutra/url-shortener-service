@@ -1,4 +1,4 @@
-# URL Shortener Service
+# URL Shortener
 
 A simple URL shortener service built with Node.js and SQLite.
 This service allows users to shorten long URLs. It's still a work in progress
@@ -48,7 +48,7 @@ so its going to have more features in the future.
     }
     ```
 
-2. The service will be available at `http://localhost:8000`.
+2. Will be available at `http://localhost:8000`.
 
 ### API Endpoints
 
@@ -76,15 +76,22 @@ so its going to have more features in the future.
 
 ## Database
 
-The service uses SQLite3 to store the URLs. The database schema includes a table `urls` with the following columns:
+The service uses SQLite3 to store the URLs. The database schema includes a table `urls`, and a table `users`, with the following columns:
 
+# 'urls' table:
 - `id` (INTEGER): Primary key
 - `originalUrl` (TEXT): The original long URL
 - `shortUrl` (TEXT): The shortened URL
 
+# 'users' table:
+- `id` (INTEGER): Primary key
+- `username` (TEXT): User's username
+- `email` (TEXT): User's email
+- `password` (TEXT): User's password ( We hash the password before inserting into the database)
+
 ## Code Structure
 
-- `server.js`: Entry point of the application
+- `./src/server.js`: Entry point of the application, get and post requests are here
 
 ## Contributing
 
