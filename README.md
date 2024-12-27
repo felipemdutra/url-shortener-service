@@ -78,12 +78,12 @@ so its going to have more features in the future.
 
 The service uses SQLite3 to store the URLs. The database schema includes a table `urls`, and a table `users`, with the following columns:
 
-# 'urls' table:
+#### 'urls' table:
 - `id` (INTEGER): Primary key
 - `originalUrl` (TEXT): The original long URL
 - `shortUrl` (TEXT): The shortened URL
 
-# 'users' table:
+#### 'users' table:
 - `id` (INTEGER): Primary key
 - `username` (TEXT): User's username
 - `email` (TEXT): User's email
