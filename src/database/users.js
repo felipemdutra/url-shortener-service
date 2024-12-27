@@ -32,78 +32,32 @@ export function initializeUsersTable(db) {
  * @param email {string}
  * @param password {string}
 */
-export function insertUser(db, username, email, password) {
-    // Email is not valid
-    //if (!checkValidEmail(db, email)) {
-    //    console.log("Email already exists")
-     //   return null;
-    //}
-
-    //if (!checkValidUsername(db, username)) {
-     //   console.log("Username already exists")
-     //   return null;
-   // }
-
+export async function insertUser(db, username, email, password) {
     return new Promise((resolve, reject) => {
-        try {
-            // Hash password before inserting into DB.
-            const hashedPassword = hashPassword(password)
-            db.run("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", [username, email, hashedPassword], function(err) {
-                    if (err) {
-                        reject(err.message)
-                    } else {
-                        resolve(username)
-                    }
-            })
-        }
-        catch (err) {
-            reject(err.message)
-        }
-    })
-}
-
-/*
- * This function checks if there is any other user with the same email
- *
- * @param {sqlite3.Database} db
- * @param {string} email
- *
- * Returns true if no user is found and false if a user with the same email
- * exists
- */
- function checkValidEmail(db, email) {
-    return new Promise((resolve, reject) => {
-        db.get("SELECT email FROM users WHERE email = ?", [email], (err, row) => {
+        // Hash password before inserting into DB.
+        const hashedPassword = hashPassword(password)
+        db.run("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", [username, email, hashedPassword], function(err) {
             if (err) {
-                console.log(err)
-                return reject(err.message)
-            }
-
-            if (!row) {
-                resolve(true)
+                reject(handleSqliteError(err))
+            } else {
+                resolve(username)
             }
         })
-
-        resolve(false)
     })
 }
 
-function checkValidUsername(db, username) {
-    return new Promise ((resolve, reject) => {
-        db.get("SELECT username FROM users WHERE username = ?", [username], (err, row) => {
-            if (err) {
-                console.log(err)
-                return reject(err.message)
-            }
-
-            if (!row) {
-                resolve(true)
-            }
-        })
-
-        resolve(false)
-    })
-}
+function handleSqliteError(err) {
+    if (err.code === "SQLITE_CONSTRAINT") {
+        if (err.message.includes("users.username")) {
+            return "Username is already taken"
+        } else if (err.message.includes("users.email")) {
+            return "Email is already taken"
+        }
+        return "A database constraint error has occured"
+    }
+    // In case of a generic error
+    return err.message
+} 
 
 export function getUser(db, email) {
     return new Promise((resolve, reject) => {
