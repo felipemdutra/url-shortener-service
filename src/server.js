@@ -41,7 +41,6 @@ app.get(`/:shortUrl`, async (req, res) => {
     
 }) 
 
-
 app.post("/shorten", (req, res) => {
     const longUrl = req.body.longUrl
     console.log("Received: ", longUrl)
@@ -56,9 +55,9 @@ app.post("/shorten", (req, res) => {
 
 app.post("/signup", async (req, res) => {
     const { username, email, password } = req.body
-    insertUser(db, username, email, password)
 
     try {
+        await insertUser(db, username, email, password)
         // Retrieve user info
         const userInfo = await getUser(db, email)
 
@@ -68,13 +67,6 @@ app.post("/signup", async (req, res) => {
         res.status(200).send("OK")
     } catch (error) {
         console.error("Error:", error);
-
-        // Handle user not found or insertion issues
-        if (error === "User not found") {
-            res.status(404).send("Not Found");
-        } else {
-            res.status(500).send("Internal Server Error");
-        }
     }
 })
 
