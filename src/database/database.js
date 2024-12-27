@@ -11,7 +11,8 @@ export function initializeDatabase(dbPath) {
     const db = new sqlite3.Database(dbPath, (err) => {
         if (err) {
             console.error("Couldn't open Database:", err.message);
-            return
+            return null
+
         }
 
         initializeUrlsTable(db);
