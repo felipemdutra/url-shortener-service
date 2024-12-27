@@ -23,6 +23,15 @@ export function initializeUsersTable(db) {
     })
 }
 
+/*
+ * This function hashes the user's password (@param password) before inserting
+ * the username, email and hashed password into the users table.
+ *
+ * @param db {sqlite3.Database}
+ * @param username {string}
+ * @param email {string}
+ * @param password {string}
+*/
 export function insertUser(db, username, email, password) {
 
     return new Promise((resolve, reject) => {
