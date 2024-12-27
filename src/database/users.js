@@ -33,6 +33,16 @@ export function initializeUsersTable(db) {
  * @param password {string}
 */
 export function insertUser(db, username, email, password) {
+    // Email is not valid
+    //if (!checkValidEmail(db, email)) {
+    //    console.log("Email already exists")
+     //   return null;
+    //}
+
+    //if (!checkValidUsername(db, username)) {
+     //   console.log("Username already exists")
+     //   return null;
+   // }
 
     return new Promise((resolve, reject) => {
         try {
@@ -49,6 +59,66 @@ export function insertUser(db, username, email, password) {
         catch (err) {
             reject(err.message)
         }
+    })
+}
+
+/*
+ * This function checks if there is any other user with the same email
+ *
+ * @param {sqlite3.Database} db
+ * @param {string} email
+ *
+ * Returns true if no user is found and false if a user with the same email
+ * exists
+ */
+ function checkValidEmail(db, email) {
+    return new Promise((resolve, reject) => {
+        db.get("SELECT email FROM users WHERE email = ?", [email], (err, row) => {
+            if (err) {
+                console.log(err)
+                return reject(err.message)
+            }
+
+            if (!row) {
+                resolve(true)
+            }
+        })
+
+        resolve(false)
+    })
+}
+
+function checkValidUsername(db, username) {
+    return new Promise ((resolve, reject) => {
+        db.get("SELECT username FROM users WHERE username = ?", [username], (err, row) => {
+            if (err) {
+                console.log(err)
+                return reject(err.message)
+            }
+
+            if (!row) {
+                resolve(true)
+            }
+        })
+
+        resolve(false)
+    })
+}
+
+export function getUser(db, email) {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT * FROM users WHERE email = ?`, [email], (err, row) => {
+            if (err) {
+                console.log(err)
+                return reject(err.message)
+            }
+
+            if (!row) {
+                return reject("User not found")
+            }
+
+            resolve(row)
+        })
     })
 }
 
