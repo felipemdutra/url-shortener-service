@@ -1,5 +1,6 @@
 import express from "express"
 
+import { router } from "./routes/routes.js"
 import { createShortUrl } from "./url.js"
 import { initializeDatabase } from "./database/database.js"
 import { insertUrl, getUrl } from "./database/urls.js"
@@ -13,7 +14,6 @@ const db = initializeDatabase("./urlShortener.db")
 const PORT = 8000
 
 app.set("view engine", "ejs")
-
 
 app.get("/", (req, res) => {
     res.render("homePage")
@@ -40,6 +40,8 @@ app.get(`/:shortUrl`, async (req, res) => {
     }
     
 }) 
+
+app.use("/", router)
 
 app.post("/shorten", (req, res) => {
     const longUrl = req.body.longUrl
