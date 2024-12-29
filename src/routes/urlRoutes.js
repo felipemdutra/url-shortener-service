@@ -5,7 +5,9 @@ import { shortenUrl, redirectToLongUrl } from "../controllers/urlControllers.js"
 export function urlRouter(db) {
     const router = express.Router()
 
-    router.post("/shorten", shortenUrl(db))
-    router.get(`/:shortUrl`, redirectToLongUrl)
+    router.post("/shorten", (req, res) => shortenUrl(db, req, res))
+    router.get(`/:shortUrl`, (req, res) => redirectToLongUrl(db, req, res))
+
+    return router
 }
 
