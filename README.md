@@ -91,7 +91,9 @@ The service uses SQLite3 to store the URLs. The database schema includes a table
 
 ## Code Structure
 
-- `./src/server.js`: Entry point of the application, get and post requests are here
+- `./src/server.js`: Entry point of the application
+- `./src/routes/`: Handles requests and routes
+- `./src/controllers/`: All the logic behind requests
 
 ## Contributing
 
