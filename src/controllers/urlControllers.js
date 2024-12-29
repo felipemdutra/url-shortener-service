@@ -13,7 +13,7 @@ export function shortenUrl(db, req, res) {
     res.render("displayLinkPage", { shortUrl: shortUrl })
 }
 
-export async function redirectToLongUrl(req, res) {
+export async function redirectToLongUrl(db, req, res) {
     try {
         const originalUrl = await getUrl(db, req.params.shortUrl);
         if (originalUrl) {
