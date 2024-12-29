@@ -1,6 +1,7 @@
 import express from "express"
 
-import { router } from "./routes/routes.js"
+import { urlRouter } from "./routes/urlRoutes.js"
+import { userRouter } from "./routes/userRoutes.js"
 import { createShortUrl } from "./url.js"
 import { initializeDatabase } from "./database/database.js"
 import { insertUrl, getUrl } from "./database/urls.js"
@@ -15,13 +16,8 @@ const PORT = 8000
 
 app.set("view engine", "ejs")
 
-app.get("/", (req, res) => {
-    res.render("homePage")
-})
-
-app.get("/sign-up", (req, res) => {
-    res.render("signUpPage")
-}) 
+app.use("/users", userRouter)
+app.use("/", urlRouter)
 
 app.get(`/:shortUrl`, async (req, res) => {
     try {
@@ -40,8 +36,6 @@ app.get(`/:shortUrl`, async (req, res) => {
     }
     
 }) 
-
-app.use("/", router)
 
 app.post("/shorten", (req, res) => {
     const longUrl = req.body.longUrl
