@@ -1,12 +1,20 @@
 import express from "express"
 
-export const userRouter = express.Router()
+import { signUp } from "../controllers/userControllers.js"
 
-router.get("/", (req, res) => {
-    res.render("homePage")
-})
+export function userRouter(db) {
+    const router = express.Router()
 
-router.get("/sign-up", (req, res) => {
-    res.render("signUpPage")
-}) 
+    userRouter.get("/", (req, res) => {
+        res.render("homePage")
+    })
+
+    userRouter.get("/sign-up", (req, res) => {
+        res.render("signUpPage")
+    }) 
+
+    userRouter.post("/signup", signUp(db))
+
+    return router
+} 
 
