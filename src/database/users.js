@@ -32,7 +32,7 @@ export function initializeUsersTable(db) {
  * @param email {string}
  * @param password {string}
 */
-export async function insertUser(db, username, email, password) {
+export function insertUser(db, username, email, password) {
     return new Promise((resolve, reject) => {
         // Hash password before inserting into DB.
         const hashedPassword = hashPassword(password)
