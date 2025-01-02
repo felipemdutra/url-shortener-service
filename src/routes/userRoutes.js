@@ -13,7 +13,7 @@ export function userRouter(db) {
         res.render("signUpPage")
     }) 
 
-    router.post("/signup", signUp(db))
+    router.post("/signup", (req, res) => signUp(req, res, db))
 
     return router
 } 
