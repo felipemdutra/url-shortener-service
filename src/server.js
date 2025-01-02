@@ -1,4 +1,5 @@
 import express from "express";
+import session from "express-session";
 import { urlRouter } from "./routes/urlRoutes.js";
 import { userRouter } from "./routes/userRoutes.js";
 import { initializeDatabase } from "./database/database.js";
