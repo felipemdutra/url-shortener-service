@@ -68,7 +68,7 @@ export function getUser(db, email) {
             }
 
             if (!row) {
-                return reject("User not found")
+                return reject(-1)
             }
 
             resolve(row)
